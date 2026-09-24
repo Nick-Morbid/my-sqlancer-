@@ -28,8 +28,10 @@ configuration at the other experiment's directories.
    all absolute paths. The real file is ignored by Git.
 3. Mount the Synology NFS export at `/app/nfs/chq_data` and confirm it is an NFS
    mount rather than an ordinary local directory.
-4. Ensure Java, Maven, PostgreSQL build dependencies, `lcov`, `zstd`, `rsync`,
-   Python 3 and the `postgres` system user exist.
+4. Ensure Java/JDK, Maven, Git, `rsync`, `curl`, GNU build tools, Bison/Flex,
+   Perl, `lcov`/`genhtml`, `zstd`, Python 3, `sudo`, `ss`, and the `postgres`
+   system user exist. `bootstrap.sh` performs this check and reports every
+   missing prerequisite.
 5. Run `scripts/bootstrap.sh`. This builds an isolated coverage PostgreSQL and
    the pinned SQLancer++ source commit.
 6. Run `scripts/preflight.sh`; require `READY_FOR_24H=YES`.

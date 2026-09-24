@@ -11,5 +11,6 @@ export SQLANCERPP_EXPERIMENT_ENV="$LOCAL_ROOT/config/experiment.env"
 if [[ -f "$ROOT/config/experiment.env" && "$(readlink -m "$ROOT/config/experiment.env")" != "$(readlink -m "$LOCAL_ROOT/config/experiment.env")" ]]; then
   cp "$ROOT/config/experiment.env" "$LOCAL_ROOT/config/experiment.env"
 fi
+"$ROOT/scripts/verify_prerequisites.sh"
 "$LOCAL_ROOT/scripts/verify_isolation.sh"
 "$LOCAL_ROOT/scripts/prepare_sqlancerpp.sh"; "$LOCAL_ROOT/scripts/build_postgres_cov.sh"; echo "Prepared: $LOCAL_ROOT"

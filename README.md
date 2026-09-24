@@ -41,6 +41,13 @@ cp /app/sqlancerplusplus/config/experiment.env.example /app/sqlancerplusplus/con
 /app/sqlancerplusplus/scripts/run_24h.sh tlp-where
 ```
 
+The container must provide Java/JDK, Maven, Git, `rsync`, `curl`, GNU build
+tools, Bison/Flex, Perl, `lcov`/`genhtml`, `zstd`, Python 3, `sudo`, `ss`, and a
+`postgres` system user. `bootstrap.sh` checks these prerequisites and stops
+with an explicit list if anything is missing; it does not silently install OS
+packages. PostgreSQL's source tarball and the SQLancer++ source are downloaded
+only during bootstrap.
+
 `bootstrap.sh` downloads/builds the pinned SQLancer++ source and builds a
 separate PostgreSQL 18.3 with coverage instrumentation. It does not reuse the
 existing PostgreSQL on ports 5432/5433 or the live ShQveL PostgreSQL on port
