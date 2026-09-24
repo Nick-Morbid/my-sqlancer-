@@ -12,12 +12,12 @@ so that the baseline cannot silently drift to LLM-enabled `main`.
 ## Quick start in a new container
 
 ```bash
-git clone git@github.com:Nick-Morbid/my-sqlancer-.git /app/my-sqlancer-
-cp /app/my-sqlancer-/config/experiment.env.example /app/my-sqlancer-/config/experiment.env
+git clone git@github.com:Nick-Morbid/my-sqlancer-.git /app/sqlancerplusplus
+cp /app/sqlancerplusplus/config/experiment.env.example /app/sqlancerplusplus/config/experiment.env
 # Adjust paths/NFS/profile; no API key is required.
-/app/my-sqlancer-/scripts/bootstrap.sh
-/app/sqlancerpp_24h/scripts/preflight.sh
-/app/sqlancerpp_24h/scripts/run_24h.sh tlp-where
+/app/sqlancerplusplus/scripts/bootstrap.sh
+/app/sqlancerplusplus/scripts/preflight.sh
+/app/sqlancerplusplus/scripts/run_24h.sh tlp-where
 ```
 
 Use `tlp-where` for the paper-style TLP experiment, `norec` for NoREC, and
@@ -32,3 +32,9 @@ required; every run manifest records it.
 Read [experiment design](docs/EXPERIMENT_DESIGN.md), [artifact layout](docs/ARTIFACT_LAYOUT.md),
 [validation record](docs/VALIDATION.md), and [porting notes](docs/PORTING_FROM_SHQVEL.md)
 before the formal run.
+
+The default local deployment is self-contained under `/app/sqlancerplusplus`
+and listens on PostgreSQL port 55434. It does not access the ShQveL deployment
+under `/app/my_ShQveL` or its port 55433. See
+[coexistence and migration](docs/COEXISTENCE_AND_MIGRATION.md) before running
+multiple baselines in the same container.

@@ -2,11 +2,21 @@
 set -Eeuo pipefail
 source "$(dirname "$0")/common.sh"
 
+[[ "${PG_BUILD_JOBS:-}" =~ ^[1-9][0-9]*$ ]] || die "invalid PG_BUILD_JOBS: ${PG_BUILD_JOBS:-unset}"
+
 TARBALL="$LOCAL_ROOT/postgres/source/postgresql-$PG_VERSION.tar.gz"
 SOURCE_PARENT="$LOCAL_ROOT/postgres/source"
 DOWNLOAD_URL="https://ftp.postgresql.org/pub/source/v$PG_VERSION/postgresql-$PG_VERSION.tar.gz"
 
 [[ "$PG_PORT" != 5432 && "$PG_PORT" != 5433 ]] || die "coverage PostgreSQL must not use 5432 or 5433"
+if [[ -x "$PG_INSTALL/bin/postgres" && -f "$PG_DATA/PG_VERSION" ]]; then
+  if ! pg_is_running; then
+    "$HARNESS_ROOT/scripts/start_postgres_cov.sh"
+  fi
+  "$HARNESS_ROOT/scripts/verify_target.sh"
+  printf 'Existing PostgreSQL coverage build is ready at %s on port %s\n' "$PG_INSTALL" "$PG_PORT"
+  exit 0
+fi
 if ss -ltn | awk '{print $4}' | grep -Eq "(^|:)$PG_PORT$"; then
   die "port $PG_PORT is already in use"
 fi
@@ -30,7 +40,7 @@ cd "$PG_SOURCE"
   --enable-cassert \
   --enable-coverage \
   --without-icu
-make -j"\$(nproc)"
+make -j"$PG_BUILD_JOBS"
 make install
 EOF
 
@@ -71,4 +81,3 @@ SELECT 'CREATE DATABASE $PG_DATABASE' WHERE NOT EXISTS
 SQL
 
 printf 'PostgreSQL coverage build ready at %s on port %s\n' "$PG_INSTALL" "$PG_PORT"
-
