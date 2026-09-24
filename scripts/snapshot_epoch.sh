@@ -20,4 +20,4 @@ python3 "$HARNESS_ROOT/scripts/analyze_epoch.py" --epoch "$OUT"
 (cd "$OUT" && find . -type f ! -name checksums.sha256 -print0 | sort -z | xargs -0 sha256sum > checksums.sha256)
 date --iso-8601=seconds > "$OUT/COMPLETE"
 "$HARNESS_ROOT/scripts/upload_epoch.sh" "$RUN_ID" "$NAME" "$OUT"
-python3 "$HARNESS_ROOT/scripts/prune_uploaded_epoch.py" --local-root "$LOCAL_ROOT" --run-id "$RUN_ID" --epoch "$NAME" --remote "$NFS_ROOT/$RUN_ID/$NAME" --postgres-logs "$LOCAL_ROOT/postgres/logs" --offset-state "$STATE_DIR/$RUN_ID-postgres-offsets.json" --active-log "$ACTIVE"
+python3 "$HARNESS_ROOT/scripts/prune_uploaded_epoch.py" --local-root "$LOCAL_ROOT" --run-id "$RUN_ID" --epoch "$NAME" --remote "$NFS_ROOT/$RUN_ID/$NAME" --postgres-logs "$LOCAL_ROOT/postgres/logs" --offset-state "$STATE_DIR/$RUN_ID-postgres-offsets.json" --active-log "$ACTIVE" --sql-logs "$WORK_REPO/logs" --sql-offset-state "$STATE_DIR/$RUN_ID-sql-offsets.json"

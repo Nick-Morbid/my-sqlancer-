@@ -35,6 +35,9 @@ experiment but do not constitute a completed 24-hour run.
   SHA-256 manifests, and atomically uploaded all three artifact groups to NFS.
 - Replay reconstruction recovered all 22,353 statements and the same
   77.57348% execution success rate reported by the epoch analyzer.
+- The hourly cleanup path was audited to remove committed, unchanged SQLancer
+  log files as well as PostgreSQL CSV files; a file that grows during upload
+  is retained for the next epoch.
 - Throughout validation, the concurrent ShQveL Java process and its PostgreSQL
   listener on port 55433 remained running. No validation command connected to
   that port or used `/app/my_ShQveL` as a mutable path.
